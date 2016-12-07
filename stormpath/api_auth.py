@@ -571,17 +571,7 @@ class JwtAuthenticator(Authenticator):
     def _authenticate_with_local_validation(self, token):
         access_token = AccessToken(self.app, token)
         if access_token._is_valid():
-            try:
-                decoded_token = jwt.decode(
-                                    access_token.token,
-                                    self.app._client.auth.secret,
-                                    algorithms=['HS256'],
-                                    leeway=LEEWAY
-                                )
-            except jwt.DecodeError:
-                return None
-            if 'iss' in decoded_token and decoded_token['iss'] == self.app.href:
-                return access_token
+            return access_token
 
         return None
 
